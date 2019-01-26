@@ -46,19 +46,19 @@ for i in range(len(time)):
     else:
         h = h_tide - h_lagoon
         h_net = h * (1 - k_s)
-        Q = np.sqrt(abs(2 * g * h_net)) * A_s * Cd_s #flow rate through turbine or sluice
-        dx = (Q / A_l) * dt #change in lagoon height
+        Q_s = np.sqrt(abs(2 * g * h_net)) * A_s * Cd_s #flow rate through sluice
+        #Q = np.sqrt(abs(2 * g * h_net)) * A_t * Qt #flow rate through turbine
+        dx = (Q_s / A_l) * dt #change in lagoon height
         h_lagoon = h_lagoon + dx
         y2 = h_lagoon
         #for height in h_net:
-        #    y3 = 0*((d*g*h_net*n_t*n_g*Q)/1000)
-            #y3 = 0
+        #    y3 = (d*g*h_net*n_t*n_g*Q_s)/1000000
 
 
 
 source = ColumnDataSource(data=dict(x=x, y1=y1, y2=y2, y3=y3))
 
-p = figure(width=900, height=400, y_range=(0,10), x_axis_label="time(hrs)", y_axis_label="height(m)")
+p = figure(width=900, height=400, y_range=(2,10), x_axis_label="time(hrs)", y_axis_label="height(m)")
 p.circle(x='x', y='y1', source=source, size=7, color="firebrick", alpha=0.5, legend="tide height")
 p.circle(x='x', y='y2', source=source, size=7, color="blue", alpha=0.5, legend="lagoon height")
 p.legend.location = "top_left"
@@ -100,14 +100,14 @@ def update_data(attrname, old, new):
         else:
             h = h_tide - h_lagoon
             h_net = h * (1 - k_s)
-            Q = np.sqrt(abs(2 * g * h_net)) * A_s * Cd_s #flow rate through sluice
+            Q_s = np.sqrt(abs(2 * g * h_net)) * A_s * Cd_s #flow rate through sluice
+            #Q = np.sqrt(abs(2 * g * h_net)) * A_t * Qt #flow rate through turbine
             #Q_2 = 0
-            dx = (Q / A_l) * dt #change in lagoon height
+            dx = (Q_s / A_l) * dt #change in lagoon height
             h_lagoon = h_lagoon + dx
             y2 = h_lagoon
-
             #for height in h_net:
-            #    y3 = (d*g*h_net*n_t*n_g*Q_2)/1000
+            #    y3 = (d*g*h_net*n_t*n_g*Q_s)/1000000
 
 
     source.data = dict(x=x, y1=y1, y2=y2, y3=y3)
